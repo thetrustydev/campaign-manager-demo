@@ -6,23 +6,23 @@
 <title>Campaign Manager Demo</title>
 <style>
   :root {
-    --bg: #f4f6f5;
+    --bg: #f6f7f3;
     --panel: #ffffff;
-    --border: #e0e6e4;
-    --text: #1c2430;
-    --muted: #64716d;
-    --accent: #128c7e;
-    --accent-dark: #0e6f64;
-    --side: #10221f;
+    --border: #e3e8e2;
+    --text: #22302c;
+    --muted: #68766f;
+    --accent: #16a08f;
+    --accent-dark: #0f8171;
+    --side: #0e2622;
     --side-text: #cfe3df;
     --side-dim: #7fa39c;
     --red: #b42318; --red-bg: #fef3f2; --red-line: #fecdca;
     --amber: #b54708; --amber-bg: #fffaeb; --amber-line: #fedf89;
     --blue: #175cd3; --blue-bg: #eff8ff; --blue-line: #b2ddff;
     --green: #067647; --green-bg: #ecfdf3; --green-line: #a6f4c5;
-    --chip: #eef1f0;
+    --chip: #edf1ec;
     --bubble: #e7fedd;
-    --shadow: 0 1px 2px rgba(16, 34, 31, .06);
+    --shadow: 0 1px 3px rgba(20, 35, 30, .08);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -74,10 +74,12 @@
   }
   .brand { color: #fff; font-weight: 700; font-size: 15.5px; padding: 4px 10px 16px; }
   .nav-link {
-    color: var(--side-text); padding: 9px 12px; border-radius: 8px; font-size: 14px;
+    color: var(--side-text); padding: 9px 13px; border-radius: 999px; font-size: 14px;
     cursor: pointer; user-select: none; background: none; border: none; text-align: left;
     font-family: inherit; width: 100%; white-space: nowrap;
+    display: flex; align-items: center; gap: 10px;
   }
+  .nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
   .nav-link:hover { background: rgba(255,255,255,.07); }
   .nav-link.active { background: var(--accent); color: #fff; }
   .nav-link:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
@@ -86,12 +88,12 @@
   .main { flex: 1; padding: 26px 30px 60px; max-width: 1020px; min-width: 0; }
 
   .card {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
-    padding: 16px 18px; margin-bottom: 14px; box-shadow: var(--shadow);
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--shadow);
   }
   .grid { display: grid; gap: 12px; margin-bottom: 14px; grid-template-columns: repeat(4, 1fr); }
   .grid.two { grid-template-columns: repeat(2, 1fr); }
-  .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; box-shadow: var(--shadow); }
   .stat .lab { font-size: 12px; color: var(--muted); }
   .stat .val { font-size: 22px; font-weight: 700; margin-top: 2px; font-variant-numeric: tabular-nums; }
 
@@ -108,15 +110,17 @@
   .b-red { background: var(--red-bg); color: var(--red); }
   .b-gray { background: var(--chip); color: var(--muted); }
 
-  .banner { border-radius: 10px; padding: 11px 14px; margin-bottom: 12px; font-size: 14px; border: 1px solid; }
+  .banner { border-radius: 12px; padding: 12px 15px; margin-bottom: 12px; font-size: 14px; border: 1px solid; }
   .n-blue { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-line); }
   .n-amber { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-line); }
   .n-green { background: var(--green-bg); color: var(--green); border-color: var(--green-line); }
 
   button.btn {
-    font: inherit; font-weight: 600; font-size: 14px; background: var(--accent); color: #fff;
-    border: none; border-radius: 8px; padding: 10px 16px; cursor: pointer;
+    font: inherit; font-weight: 600; font-size: 14.5px; background: var(--accent); color: #fff;
+    border: none; border-radius: 10px; padding: 11px 18px; cursor: pointer;
+    box-shadow: var(--shadow); transition: transform .1s;
   }
+  button.btn:active { transform: scale(.98); }
   button.btn:hover { background: var(--accent-dark); }
   button.btn:disabled { background: var(--chip); color: var(--muted); cursor: not-allowed; }
   button.btn.ghost { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
@@ -126,7 +130,7 @@
   label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
   input[type=text], select, textarea {
     font: inherit; width: 100%; max-width: 440px; color: var(--text);
-    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; background: var(--panel);
   }
   textarea { min-height: 96px; max-width: 560px; }
   .hint { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
@@ -152,9 +156,9 @@
   .steps { list-style: none; padding: 0; margin: 0; }
   .steps li { display: flex; gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); margin: 0; }
   .steps li:last-child { border-bottom: none; }
-  .tick { flex-shrink: 0; width: 22px; height: 22px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; transform: translateY(4px); }
-  .tick.done { background: var(--green-bg); color: var(--green); }
-  .tick.todo { background: var(--chip); color: var(--muted); }
+  .tick { flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; transform: translateY(4px); }
+  .tick.done { background: var(--accent); color: #fff; }
+  .tick.todo { background: var(--chip); color: var(--muted); border: 1.5px dashed var(--border); }
 
   .toast {
     position: fixed; bottom: 18px; left: 50%; transform: translate(-50%, 8px);
@@ -236,8 +240,10 @@ function dashboard() {
   const hasMessage = S.templates.length > 0;
   const step = (done, label, extra) =>
     `<li><span class="tick ${done ? "done" : "todo"}">${done ? "✓" : ""}</span><span>${label}${extra ? `<div class="muted small">${extra}</div>` : ""}</span></li>`;
+  const h = new Date().getHours();
+  const greet = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
   return `
-    <h1>Dashboard</h1>
+    <h1>${greet} 👋</h1>
     <p class="muted small">Your starting point each time you open the app.</p>
     <div class="card">
       <h2>Get set up</h2>
@@ -530,8 +536,17 @@ function help() {
 }
 
 // ---------- shell ----------
+const ic = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const ICONS = {
+  dashboard: ic('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>'),
+  campaigns: ic('<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/>'),
+  contacts: ic('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 5.4a3 3 0 1 1 1.5 5.7"/><path d="M17.5 14.7c2.4.6 4 2.3 4 4.8"/>'),
+  templates: ic('<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l1.8-3.7A8.5 8.5 0 1 1 21 11.5z"/>'),
+  settings: ic('<path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="7" cy="18" r="2"/>'),
+  help: ic('<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.3 2.6c-.8.3-.9 1-.9 1.6"/><path d="M12 17h.01"/>'),
+};
 const SCREENS = {
-  dashboard: { label: "Dashboard", fn: dashboard },
+  dashboard: { label: "Home", fn: dashboard },
   campaigns: { label: "Campaigns", fn: campaignsScreen },
   contacts: { label: "Contacts", fn: contacts },
   templates: { label: "Messages", fn: templates },
@@ -544,7 +559,7 @@ function render() {
   const navActive = { wizard: "campaigns", import: "contacts", newTemplate: "templates" }[S.screen] || S.screen;
   $("#nav").innerHTML = `<div class="brand">Campaign Manager</div>` +
     Object.entries(SCREENS).map(([k, v]) =>
-      `<button class="nav-link ${navActive === k ? "active" : ""}" onclick="go('${k}')">${v.label}</button>`).join("") +
+      `<button class="nav-link ${navActive === k ? "active" : ""}" onclick="go('${k}')">${ICONS[k]}${v.label}</button>`).join("") +
     `<div class="side-foot">Signed in as the owner (demo)</div>`;
   $("#main").innerHTML = (SCREENS[S.screen]?.fn || HIDDEN[S.screen] || dashboard)();
 }
