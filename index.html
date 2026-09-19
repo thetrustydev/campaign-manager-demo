@@ -383,12 +383,12 @@ function newTemplate() {
       <label class="radio-line"><input type="radio" name="cat" ${NT.cat==="MARKETING"?"checked":""} onchange="NT.cat='MARKETING';render()">
         <span><b>Marketing</b> — offers, tickets, anything promotional <span class="muted">(~3.8p per message)</span></span></label>
       <label>The message</label>
-      <textarea placeholder="e.g. Hi {{1}}, a reminder that [event] takes place on [date] at [venue]." oninput="NT.body=this.value; $('#tprev').textContent = this.value.replace(/{{1}}/g,'Sarah') || 'Your message appears here as recipients will see it…'">${esc(NT.body)}</textarea>
-      <p class="hint">"Reply STOP to opt out" is added automatically — it's required. The button below inserts each person's first name.</p>
-      <button class="btn ghost" onclick="NT.body += (NT.body && !NT.body.endsWith(' ') ? ' ' : '') + '{{1}}'; render()">Insert first name</button>
+      <textarea placeholder="e.g. Hi [First name], a reminder that the event takes place on Saturday at the venue." oninput="NT.body=this.value; $('#tprev').textContent = this.value.replace(/\[first name\]/gi,'Sarah') || 'Your message appears here as recipients will see it…'">${esc(NT.body)}</textarea>
+      <p class="hint">"Reply STOP to opt out" is added automatically — it's required. Wherever the message says [First name], each person sees their own name.</p>
+      <button class="btn ghost" onclick="NT.body += (NT.body && !NT.body.endsWith(' ') ? ' ' : '') + '[First name]'; render()">Add [First name]</button>
     </div>
     <div class="card"><h2>Preview</h2>
-      <div class="bubble"><span id="tprev">${esc(NT.body.replace(/\{\{1\}\}/g, "Sarah") || "Your message appears here as recipients will see it…")}</span><div class="foot">Reply STOP to opt out</div></div>
+      <div class="bubble"><span id="tprev">${esc(NT.body.replace(/\[first name\]/gi, "Sarah") || "Your message appears here as recipients will see it…")}</span><div class="foot">Reply STOP to opt out</div></div>
     </div>
     <button class="btn" onclick="saveTemplate()">Save and send for approval</button>`;
 }
@@ -448,7 +448,7 @@ function wizard() {
       <select onchange="S.wiz.tmpl=parseInt(this.value); render()">
         ${approved.map(x => `<option value="${x.id}" ${x.id===w.tmpl?"selected":""}>${esc(x.name)} (${x.cat === "MARKETING" ? "marketing rate" : "reminder rate"})</option>`).join("")}
       </select>
-      <div class="bubble mt">${esc(t.body.replace(/\{\{1\}\}/g, "Sarah"))}<div class="foot">Reply STOP to opt out</div></div>
+      <div class="bubble mt">${esc(t.body.replace(/\[first name\]/gi, "Sarah"))}<div class="foot">Reply STOP to opt out</div></div>
     </div>
     <div class="card">
       <h2>3 — Who receives it</h2>
