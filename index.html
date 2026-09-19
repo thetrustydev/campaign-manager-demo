@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Campaign Manager Demo</title>
 <style>
   :root {
@@ -8,7 +13,6 @@
     --muted: #64716d;
     --accent: #128c7e;
     --accent-dark: #0e6f64;
-    --accent-soft: #e7f4f2;
     --side: #10221f;
     --side-text: #cfe3df;
     --side-dim: #7fa39c;
@@ -24,7 +28,7 @@
     :root:not([data-theme="light"]) {
       --bg: #101715; --panel: #18201e; --border: #2a3532;
       --text: #e6ebe9; --muted: #93a19c;
-      --accent: #2fb3a2; --accent-dark: #4cc7b7; --accent-soft: #16302c;
+      --accent: #2fb3a2; --accent-dark: #4cc7b7;
       --side: #0b1513; --side-text: #b9cdc8; --side-dim: #6b847e;
       --red: #f2938a; --red-bg: #2c1615; --red-line: #55221f;
       --amber: #f0b064; --amber-bg: #2b2010; --amber-line: #57411b;
@@ -36,7 +40,7 @@
   :root[data-theme="dark"] {
     --bg: #101715; --panel: #18201e; --border: #2a3532;
     --text: #e6ebe9; --muted: #93a19c;
-    --accent: #2fb3a2; --accent-dark: #4cc7b7; --accent-soft: #16302c;
+    --accent: #2fb3a2; --accent-dark: #4cc7b7;
     --side: #0b1513; --side-text: #b9cdc8; --side-dim: #6b847e;
     --red: #f2938a; --red-bg: #2c1615; --red-line: #55221f;
     --amber: #f0b064; --amber-bg: #2b2010; --amber-line: #57411b;
@@ -54,10 +58,12 @@
   h2 { font-size: 16px; margin: 0 0 10px; }
   p { margin: 0 0 10px; }
   a { color: var(--accent); text-decoration: none; cursor: pointer; }
+  ul, ol { margin: 0 0 10px; padding-left: 20px; }
+  li { margin-bottom: 4px; }
 
   .demo-strip {
     background: var(--side); color: var(--side-text); font-size: 13px;
-    padding: 7px 16px; text-align: center;
+    padding: 7px 14px; text-align: center;
   }
   .demo-strip b { color: #fff; }
 
@@ -68,29 +74,30 @@
   }
   .brand { color: #fff; font-weight: 700; font-size: 15.5px; padding: 4px 10px 16px; }
   .nav-link {
-    color: var(--side-text); padding: 8px 10px; border-radius: 8px; font-size: 14px;
-    cursor: pointer; user-select: none; background: none; border: none; text-align: left; font-family: inherit; width: 100%;
+    color: var(--side-text); padding: 9px 12px; border-radius: 8px; font-size: 14px;
+    cursor: pointer; user-select: none; background: none; border: none; text-align: left;
+    font-family: inherit; width: 100%; white-space: nowrap;
   }
   .nav-link:hover { background: rgba(255,255,255,.07); }
   .nav-link.active { background: var(--accent); color: #fff; }
   .nav-link:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
   .side-foot { margin-top: auto; padding: 8px 10px; font-size: 12px; color: var(--side-dim); }
 
-  .main { flex: 1; padding: 26px 30px 60px; max-width: 1020px; }
+  .main { flex: 1; padding: 26px 30px 60px; max-width: 1020px; min-width: 0; }
 
   .card {
     background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
     padding: 16px 18px; margin-bottom: 14px; box-shadow: var(--shadow);
   }
-  .grid { display: grid; gap: 12px; margin-bottom: 14px; }
-  .cols-4 { grid-template-columns: repeat(4, 1fr); }
-  @media (max-width: 860px) { .cols-4 { grid-template-columns: 1fr 1fr; } .main { padding: 18px; } }
+  .grid { display: grid; gap: 12px; margin-bottom: 14px; grid-template-columns: repeat(4, 1fr); }
+  .grid.two { grid-template-columns: repeat(2, 1fr); }
   .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
   .stat .lab { font-size: 12px; color: var(--muted); }
   .stat .val { font-size: 22px; font-weight: 700; margin-top: 2px; font-variant-numeric: tabular-nums; }
 
+  .tw { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px; padding: 6px 10px; border-bottom: 1px solid var(--border); letter-spacing: .02em; text-transform: uppercase; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px; padding: 6px 10px; border-bottom: 1px solid var(--border); letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; }
   td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: top; font-variant-numeric: tabular-nums; }
   tr:last-child td { border-bottom: none; }
 
@@ -108,7 +115,7 @@
 
   button.btn {
     font: inherit; font-weight: 600; font-size: 14px; background: var(--accent); color: #fff;
-    border: none; border-radius: 8px; padding: 8px 15px; cursor: pointer;
+    border: none; border-radius: 8px; padding: 10px 16px; cursor: pointer;
   }
   button.btn:hover { background: var(--accent-dark); }
   button.btn:disabled { background: var(--chip); color: var(--muted); cursor: not-allowed; }
@@ -119,7 +126,7 @@
   label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
   input[type=text], select, textarea {
     font: inherit; width: 100%; max-width: 440px; color: var(--text);
-    border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: var(--panel);
   }
   textarea { min-height: 96px; max-width: 560px; }
   .hint { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
@@ -142,19 +149,48 @@
 
   .radio-line { display: flex; gap: 8px; align-items: baseline; font-weight: 400; margin: 6px 0; cursor: pointer; }
 
+  .steps { list-style: none; padding: 0; margin: 0; }
+  .steps li { display: flex; gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); margin: 0; }
+  .steps li:last-child { border-bottom: none; }
+  .tick { flex-shrink: 0; width: 22px; height: 22px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; transform: translateY(4px); }
+  .tick.done { background: var(--green-bg); color: var(--green); }
+  .tick.todo { background: var(--chip); color: var(--muted); }
+
   .toast {
-    position: fixed; bottom: 18px; right: 18px; background: var(--side); color: #fff;
-    padding: 11px 16px; border-radius: 10px; font-size: 14px; max-width: 340px;
-    opacity: 0; transform: translateY(8px); transition: all .25s; pointer-events: none;
+    position: fixed; bottom: 18px; left: 50%; transform: translate(-50%, 8px);
+    background: var(--side); color: #fff; padding: 11px 16px; border-radius: 10px;
+    font-size: 14px; max-width: min(340px, 90vw); opacity: 0; transition: all .25s; pointer-events: none;
+    text-align: center;
   }
-  .toast.show { opacity: 1; transform: none; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
   @media (prefers-reduced-motion: reduce) { .toast, .progress > div { transition: none; } }
 
   .help-block h2 { margin-top: 22px; }
-  .help-block li { margin-bottom: 5px; }
-</style>
 
-<div class="demo-strip"><b>Demo</b> — example data only. Nothing is sent to anyone, and nothing here is real.</div>
+  /* ---- mobile ---- */
+  @media (max-width: 760px) {
+    .shell { flex-direction: column; }
+    .sidebar {
+      width: 100%; flex-direction: row; align-items: center; gap: 4px;
+      padding: 8px 10px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; position: sticky; top: 0; z-index: 10;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .brand { display: none; }
+    .nav-link { width: auto; padding: 8px 13px; font-size: 14px; }
+    .side-foot { display: none; }
+    .main { padding: 16px 14px 50px; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 19px; }
+    input[type=text], select, textarea { max-width: 100%; }
+    .bubble { max-width: 100%; }
+    .card { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-strip"><b>Demo</b> — example data only. Nothing is sent to anyone.</div>
 <div class="shell">
   <nav class="sidebar" id="nav"></nav>
   <main class="main" id="main"></main>
@@ -164,41 +200,23 @@
 <script>
 "use strict";
 
-// ---------- demo state ----------
+// ---------- demo state: starts completely fresh ----------
 const fmt = n => n.toLocaleString("en-GB");
 const pounds = pence => "£" + Math.round(pence / 100).toLocaleString("en-GB");
 
 const S = {
   screen: "dashboard",
-  contacts: 38412,
-  unsubscribed: 214,
-  tierLimit: 10000,
-  usedToday: 6214,
-  templates: [
-    { id: 1, name: "Summer Open Day reminder", cat: "UTILITY", status: "approved",
-      body: "Hi {{1}}, a reminder that the Summer Open Day you registered for takes place on Saturday 12 September, 10am–4pm at the Riverside site. We look forward to seeing you." },
-    { id: 2, name: "Early bird tickets", cat: "MARKETING", status: "approved",
-      body: "Hi {{1}}, early-bird tickets for the Autumn Fair are now live — save 20% until Friday." },
-    { id: 3, name: "Spring newsletter teaser", cat: "UTILITY", status: "rejected",
-      body: "Don't miss out! Huge news inside our spring newsletter…",
-      reason: "The wording reads as promotional for the category chosen. Either soften it to a plain factual reminder, or re-create it as a Marketing message." },
-  ],
-  campaigns: [
-    { id: 11, name: "Summer Open Day announcement", tmpl: 1, status: "running",
-      total: 38198, done: 23650, delivered: 21480, read: 14876, failed: 412, cost: 60700, startedDays: 3 },
-    { id: 10, name: "March event announcement", tmpl: 1, status: "completed",
-      total: 38102, done: 38102, delivered: 36275, read: 29418, failed: 388, cost: 61200, startedDays: 160 },
-  ],
-  imports: [
-    { file: "contacts-march.csv", date: "12 Mar 2026", added: 38102, skipped: "512 invalid, 940 duplicates" },
-  ],
+  contacts: 0,
+  unsubscribed: 0,
+  tierLimit: 2000,
+  templates: [],
+  imports: [],
   importPhase: "pick", importProgress: 0,
-  wiz: { name: "", tmpl: 1, typed: "", started: false },
-  detailId: 11,
-  simTimer: null,
+  wiz: { name: "", tmpl: 0, typed: "", attempted: false },
 };
+const NT = { name: "", cat: "UTILITY", body: "" };
 
-// ---------- tiny helpers ----------
+// ---------- helpers ----------
 const $ = sel => document.querySelector(sel);
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 let toastTimer = null;
@@ -210,208 +228,71 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove("show"), 4200);
 }
 function go(screen) { S.screen = screen; render(); window.scrollTo(0, 0); }
+const approvedTemplates = () => S.templates.filter(t => t.status === "approved");
 
-// ---------- sending simulation ----------
-function tickSim() {
-  const c = S.campaigns.find(x => x.status === "running");
-  if (!c) return;
-  const dailyCap = Math.floor(S.tierLimit * 0.95);
-  if (S.usedToday >= dailyCap) {
-    c.status = "paused_daily_limit";
-  } else {
-    const step = Math.min(97 + Math.floor(Math.random() * 60), c.total - c.done, dailyCap - S.usedToday);
-    c.done += step; S.usedToday += step;
-    c.delivered = Math.min(c.delivered + Math.floor(step * 0.86), c.done);
-    c.read = Math.min(c.read + Math.floor(step * 0.55), c.delivered);
-    if (c.done >= c.total) { c.status = "completed"; toast("Campaign finished — the summary email has been sent."); }
-  }
-  if (["dashboard", "campaigns", "detail"].includes(S.screen)) render();
-}
-setInterval(tickSim, 1600);
-
-function nextDay() { // demo-only control
-  S.usedToday = 0;
-  const c = S.campaigns.find(x => x.status === "paused_daily_limit");
-  if (c) c.status = "running";
-  toast("Demo: skipped to the next day — sending resumed automatically.");
-  render();
-}
-
-// ---------- screens ----------
-function statusBadge(st) {
-  return {
-    running: '<span class="badge b-blue">Sending</span>',
-    paused_daily_limit: '<span class="badge b-blue">Done for today</span>',
-    completed: '<span class="badge b-green">Completed</span>',
-  }[st] || '<span class="badge b-gray">Draft</span>';
-}
-
+// ---------- dashboard ----------
 function dashboard() {
-  const c = S.campaigns[0];
-  const pct = Math.round(c.done / c.total * 100);
-  const capped = c.status === "paused_daily_limit";
+  const hasContacts = S.contacts > 0;
+  const hasMessage = S.templates.length > 0;
+  const step = (done, label, extra) =>
+    `<li><span class="tick ${done ? "done" : "todo"}">${done ? "✓" : ""}</span><span>${label}${extra ? `<div class="muted small">${extra}</div>` : ""}</span></li>`;
   return `
     <h1>Dashboard</h1>
-    <p class="muted small">Everything here updates by itself — this is the page you'd glance at while a campaign runs.</p>
-    ${capped ? `<div class="banner n-blue">Done for today — WhatsApp limits how many people you can message per day (${fmt(S.tierLimit)}). Sending continues automatically tomorrow. Nothing to do. <a onclick="nextDay()">(demo: skip to tomorrow)</a></div>` : ""}
+    <p class="muted small">Your starting point each time you open the app.</p>
     <div class="card">
-      <div class="spread">
-        <h2 style="margin:0"><a onclick="S.detailId=${c.id};go('detail')">${esc(c.name)}</a></h2>
-        ${statusBadge(c.status)}
-      </div>
-      <div class="progress mt"><div style="width:${pct}%"></div></div>
-      <p class="muted small mt" style="margin:8px 0 0">${fmt(c.done)} of ${fmt(c.total)} handled · ${fmt(c.total - c.done)} still to send</p>
+      <h2>Get set up</h2>
+      <ol class="steps">
+        ${step(hasContacts, `<a onclick="go('contacts')"><b>Upload your contacts</b></a>`,
+          hasContacts ? `${fmt(S.contacts)} contacts ready` : "A CSV file of names and numbers — you'll see exactly what it found before anything is added")}
+        ${step(hasMessage, `<a onclick="go('templates')"><b>Write your message</b></a>`,
+          hasMessage ? (approvedTemplates().length ? "Approved and ready to send" : "Waiting for Meta approval — usually minutes")
+                     : "Meta approves the wording automatically; you get an email when it's ready")}
+        ${step(false, `<a onclick="go('wizard')"><b>Start a campaign</b></a>`,
+          "Pick the message, check the cost, press send — switched off in this demo")}
+      </ol>
     </div>
-    <div class="grid cols-4">
+    <div class="grid">
       <div class="stat"><div class="lab">Contacts</div><div class="val">${fmt(S.contacts)}</div></div>
       <div class="stat"><div class="lab">Unsubscribed</div><div class="val">${fmt(S.unsubscribed)}</div></div>
-      <div class="stat"><div class="lab">Today's sending allowance</div><div class="val">${fmt(Math.min(S.usedToday, Math.floor(S.tierLimit*0.95)))}<span class="muted" style="font-size:14px"> / ${fmt(S.tierLimit)}</span></div></div>
+      <div class="stat"><div class="lab">Daily sending allowance</div><div class="val">${fmt(S.tierLimit)}<span class="muted" style="font-size:13px"> to start</span></div></div>
       <div class="stat"><div class="lab">Number health</div><div class="val"><span class="badge b-green">Healthy</span></div></div>
     </div>
     <div class="card">
-      <h2>How it works</h2>
-      <p class="muted small" style="margin:0">Upload contacts → write a message (Meta approves it, usually within the hour) → start a campaign.
-      Sending paces itself to WhatsApp's daily limits, pauses overnight, and continues day by day until everyone's covered —
-      you get an email when it finishes or if anything ever needs you.</p>
+      <h2>While a campaign runs</h2>
+      <p class="muted small" style="margin:0">This page shows live progress — how many sent, delivered and read, and how much of
+      the day's allowance is used. Sending paces itself to WhatsApp's daily limits and continues
+      day by day until everyone's covered; you get an email when it finishes.</p>
     </div>`;
 }
 
-function campaigns() {
-  return `
-    <div class="spread">
-      <div><h1>Campaigns</h1><p class="muted small">A campaign sends one approved message to your contacts.</p></div>
-      <button class="btn" onclick="go('wizard')">Start a campaign</button>
-    </div>
-    <div class="card mt"><table>
-      <thead><tr><th>Campaign</th><th>Recipients</th><th>Est. Meta cost</th><th>Status</th></tr></thead>
-      <tbody>${S.campaigns.map(c => `
-        <tr>
-          <td><a onclick="S.detailId=${c.id};go('detail')"><b>${esc(c.name)}</b></a>
-            <div class="muted small">${c.startedDays > 30 ? "March" : "This week"} · ${esc(S.templates.find(t=>t.id===c.tmpl).name)}</div></td>
-          <td>${fmt(c.total)}</td><td>${pounds(c.cost)}</td><td>${statusBadge(c.status)}</td>
-        </tr>`).join("")}
-      </tbody></table></div>`;
-}
-
-function detail() {
-  const c = S.campaigns.find(x => x.id === S.detailId) || S.campaigns[0];
-  const pct = Math.round(c.done / c.total * 100);
-  const bannerMap = {
-    running: `<div class="banner n-blue">Sending now. This continues by itself — you can close this page.</div>`,
-    paused_daily_limit: `<div class="banner n-blue">Done for today — WhatsApp limits how many people you can message per day. Sending continues automatically tomorrow. Nothing to do. <a onclick="nextDay()">(demo: skip to tomorrow)</a></div>`,
-    completed: `<div class="banner n-green">All done. The delivery numbers keep updating for a day or so as WhatsApp reports back.</div>`,
-  };
-  return `
-    <div class="spread">
-      <div><h1>${esc(c.name)}</h1>
-      <p class="muted small">Message: ${esc(S.templates.find(t=>t.id===c.tmpl).name)} · ${fmt(c.total)} recipients · est. Meta cost ${pounds(c.cost)}</p></div>
-      <div class="row">
-        ${c.status !== "completed" ? `<button class="btn ghost" onclick="toast('Paused. Press Resume when ready — nothing is lost.')">Pause</button>` : ""}
-        <button class="btn ghost" onclick="go('campaigns')">Back</button>
-      </div>
-    </div>
-    ${bannerMap[c.status] || ""}
-    <div class="card">
-      <div class="spread"><b>Progress</b><span class="muted small">${fmt(c.done)} of ${fmt(c.total)} (${pct}%)</span></div>
-      <div class="progress mt"><div style="width:${pct}%"></div></div>
-    </div>
-    <div class="grid cols-4">
-      <div class="stat"><div class="lab">Sent</div><div class="val">${fmt(c.done - c.failed)}</div></div>
-      <div class="stat"><div class="lab">Delivered</div><div class="val">${fmt(c.delivered)}</div></div>
-      <div class="stat"><div class="lab">Read</div><div class="val">${fmt(c.read)}</div></div>
-      <div class="stat"><div class="lab">Still to send</div><div class="val">${fmt(c.total - c.done)}</div></div>
-    </div>
-    <div class="card">
-      <h2>Skipped or undeliverable</h2>
-      <p style="margin:0"><b>${fmt(c.failed)}</b> numbers aren't on WhatsApp, so they were skipped — you are not charged for these.
-      <span class="muted">People who reply STOP are unsubscribed automatically and never messaged again.</span></p>
-    </div>`;
-}
-
-function wizard() {
-  const w = S.wiz;
-  const t = S.templates.find(x => x.id === w.tmpl);
-  const recipients = S.contacts - S.unsubscribed;
-  const rate = t.cat === "MARKETING" ? 3.82 : 1.59;
-  const cost = Math.round(recipients * rate);
-  const days = Math.ceil(recipients / S.tierLimit);
-  const ready = w.name.trim() && w.typed.trim().toUpperCase() === "SEND";
-  return `
-    <h1>Start a campaign</h1>
-    <div class="card mt">
-      <h2>1 — Name it</h2>
-      <input type="text" placeholder="e.g. Autumn Fair announcement" value="${esc(w.name)}"
-        oninput="S.wiz.name=this.value; syncWizard()">
-    </div>
-    <div class="card">
-      <h2>2 — Choose the message</h2>
-      <select onchange="S.wiz.tmpl=parseInt(this.value); render()">
-        ${S.templates.filter(x => x.status === "approved").map(x =>
-          `<option value="${x.id}" ${x.id===w.tmpl?"selected":""}>${esc(x.name)} (${x.cat === "MARKETING" ? "marketing rate" : "reminder rate"})</option>`).join("")}
-      </select>
-      <div class="bubble mt">${esc(t.body.replace(/\{\{1\}\}/g, "Sarah"))}<div class="foot">Reply STOP to opt out</div></div>
-    </div>
-    <div class="card">
-      <h2>3 — Who receives it</h2>
-      <select><option>Everyone in your contacts</option><option>Only the upload "contacts-march.csv"</option></select>
-      <p class="hint">Anyone who has unsubscribed is always left out automatically (${fmt(S.unsubscribed)} people).</p>
-    </div>
-    <div class="card">
-      <h2>4 — Check and send</h2>
-      <ul style="margin:0 0 10px; padding-left:20px">
-        <li><b>${fmt(recipients)}</b> people will receive this message</li>
-        <li>Meta will bill roughly <b>${pounds(cost)}</b> to your Meta account (${rate}p per message)</li>
-        <li>Sending will take about <b>${days} days</b> at your current daily WhatsApp limit — it runs by itself</li>
-      </ul>
-      <label>Type <span class="mono">SEND</span> to confirm</label>
-      <input type="text" style="max-width:130px" autocomplete="off" value="${esc(w.typed)}"
-        oninput="S.wiz.typed=this.value; syncWizard()">
-      <div class="mt">
-        <button class="btn" id="wizGo" ${ready ? "" : "disabled"} onclick="startCampaign()">Send to ${fmt(recipients)} people</button>
-      </div>
-    </div>`;
-}
-function syncWizard() {
-  const ready = S.wiz.name.trim() && S.wiz.typed.trim().toUpperCase() === "SEND";
-  const b = $("#wizGo"); if (b) b.disabled = !ready;
-}
-function startCampaign() {
-  const t = S.templates.find(x => x.id === S.wiz.tmpl);
-  const recipients = S.contacts - S.unsubscribed;
-  const rate = t.cat === "MARKETING" ? 3.82 : 1.59;
-  S.campaigns.forEach(c => { if (c.status !== "completed") c.status = "completed"; });
-  const c = { id: Date.now(), name: S.wiz.name.trim(), tmpl: t.id, status: "running",
-    total: recipients, done: 0, delivered: 0, read: 0, failed: 0, cost: Math.round(recipients * rate), startedDays: 0 };
-  S.campaigns.unshift(c);
-  S.wiz = { name: "", tmpl: 1, typed: "", started: false };
-  S.detailId = c.id;
-  toast("Campaign started. It paces itself — you can close the page.");
-  go("detail");
-}
-
+// ---------- contacts ----------
 function contacts() {
   return `
     <div class="spread">
       <div><h1>Contacts</h1><p class="muted small">Everyone you can message. Add people by uploading a CSV.</p></div>
       <button class="btn" onclick="S.importPhase='pick'; go('import')">Upload a CSV</button>
     </div>
-    <div class="grid cols-4 mt">
+    <div class="grid two mt">
       <div class="stat"><div class="lab">Contacts</div><div class="val">${fmt(S.contacts)}</div></div>
       <div class="stat"><div class="lab">Unsubscribed (never messaged)</div><div class="val">${fmt(S.unsubscribed)}</div></div>
     </div>
-    <div class="card"><h2>Past uploads</h2><table>
-      <thead><tr><th>File</th><th>Date</th><th>Added</th><th>Skipped</th></tr></thead>
-      <tbody>${S.imports.map(im => `<tr><td>${esc(im.file)}</td><td>${im.date}</td><td>${fmt(im.added)}</td><td>${im.skipped}</td></tr>`).join("")}</tbody>
-    </table></div>`;
+    <div class="card"><h2>Past uploads</h2>
+    ${S.imports.length === 0
+      ? `<p class="muted" style="margin:0">Nothing uploaded yet — start with your CSV file.</p>`
+      : `<div class="tw"><table>
+          <thead><tr><th>File</th><th>Added</th><th>Skipped</th></tr></thead>
+          <tbody>${S.imports.map(im => `<tr><td>${esc(im.file)}<div class="muted small">today</div></td><td>${fmt(im.added)}</td><td>${im.skipped}</td></tr>`).join("")}</tbody>
+        </table></div>`}
+    </div>`;
 }
 
 function importScreen() {
   if (S.importPhase === "pick") return `
     <h1>Upload contacts</h1>
-    <p class="muted small">The real app reads the CSV in your browser and shows you exactly what it found before anything is added.</p>
+    <p class="muted small">The app reads the file on your device and shows you what it found before anything is added.</p>
     <div class="card mt">
-      <button class="btn" onclick="runImport()">Use the example file (contacts-summer.csv)</button>
-      <p class="hint mt">In the demo this uses a made-up file of 41,007 rows.</p>
+      <button class="btn" onclick="runImport()">Use the example file (contacts.csv)</button>
+      <p class="hint mt">In this demo the file is made up — 41,007 rows, including a few messy ones on purpose.</p>
     </div>`;
   if (S.importPhase === "checking") return `
     <h1>Upload contacts</h1>
@@ -420,10 +301,10 @@ function importScreen() {
     <h1>Upload contacts</h1>
     <div class="card mt">
       <h2>Ready to add</h2>
-      <ul style="margin:0 0 12px; padding-left:20px">
-        <li><b>39,555</b> valid contacts will be added or updated</li>
+      <ul>
+        <li><b>39,555</b> valid contacts will be added</li>
         <li><b>940</b> duplicate rows in the file were merged</li>
-        <li><b>512</b> rows had problems and will be skipped (e.g. row 1,204: "0771 234" is too short to be a phone number) — downloadable as a list</li>
+        <li><b>512</b> rows had problems and will be skipped — e.g. row 1,204: "0771 234" is too short to be a phone number (downloadable as a list)</li>
       </ul>
       <div class="row"><button class="btn" onclick="runUpload()">Add 39,555 contacts</button>
       <button class="btn ghost" onclick="S.importPhase='pick'; render()">Choose a different file</button></div>
@@ -437,11 +318,10 @@ function importScreen() {
   return `
     <h1>Upload contacts</h1>
     <div class="card mt">
-      <div class="banner n-green">All done.</div>
-      <ul style="margin:0 0 12px; padding-left:20px">
-        <li><b>1,143</b> new contacts added</li>
-        <li><b>38,412</b> existing contacts updated</li>
-        <li><b>131</b> of these people previously unsubscribed — they stay on the do-not-message list and are always skipped</li>
+      <div class="banner n-green">All done — 39,555 contacts added.</div>
+      <ul>
+        <li><b>512</b> rows were skipped (the downloadable list says exactly why, row by row)</li>
+        <li>Anyone who ever replies STOP is excluded from every future upload and send, automatically</li>
       </ul>
       <button class="btn" onclick="go('contacts')">Back to contacts</button>
     </div>`;
@@ -454,41 +334,49 @@ function runUpload() {
   S.importPhase = "uploading"; S.importProgress = 0; render();
   const iv = setInterval(() => {
     S.importProgress = Math.min(1, S.importProgress + 0.16);
-    if (S.importProgress >= 1) { clearInterval(iv); S.importPhase = "done"; S.contacts = 39555; }
+    if (S.importProgress >= 1) {
+      clearInterval(iv);
+      S.importPhase = "done";
+      S.contacts = 39555;
+      S.imports = [{ file: "contacts.csv", added: 39555, skipped: "512 invalid, 940 duplicates" }];
+    }
     render();
   }, 350);
 }
 
+// ---------- messages ----------
 function templates() {
   const badge = t => ({
     approved: '<span class="badge b-green">Approved — ready to send</span>',
     pending: '<span class="badge b-blue">Waiting for Meta approval</span>',
-    rejected: '<span class="badge b-red">Not approved</span>',
   })[t.status];
   return `
     <div class="spread">
       <div><h1>Messages</h1><p class="muted small">Every message is approved by Meta before it can be sent — that happens automatically after you write it.</p></div>
       <button class="btn" onclick="go('newTemplate')">Write a new message</button>
     </div>
-    <div class="card mt"><table>
-      <thead><tr><th>Message</th><th>Type</th><th>Status</th></tr></thead>
-      <tbody>${S.templates.map(t => `
-        <tr>
-          <td style="max-width:380px"><b>${esc(t.name)}</b><div class="muted small">${esc(t.body)}</div></td>
-          <td>${t.cat === "MARKETING" ? "Marketing" : "Reminder"}</td>
-          <td>${badge(t)}${t.reason ? `<div class="muted small mt">${esc(t.reason)}</div>` : ""}</td>
-        </tr>`).join("")}
-      </tbody></table></div>`;
+    <div class="card mt">
+    ${S.templates.length === 0
+      ? `<p class="muted" style="margin:0">No messages yet — write your first one.</p>`
+      : `<div class="tw"><table>
+          <thead><tr><th>Message</th><th>Type</th><th>Status</th></tr></thead>
+          <tbody>${S.templates.map(t => `
+            <tr>
+              <td style="min-width:200px;max-width:380px"><b>${esc(t.name)}</b><div class="muted small">${esc(t.body)}</div></td>
+              <td>${t.cat === "MARKETING" ? "Marketing" : "Reminder"}</td>
+              <td>${badge(t)}</td>
+            </tr>`).join("")}
+          </tbody></table></div>`}
+    </div>`;
 }
 
-const NT = { name: "", cat: "UTILITY", body: "" };
 function newTemplate() {
   return `
     <h1>Write a new message</h1>
     <p class="muted small">It goes to Meta for approval when you save — usually minutes. You get an email either way.</p>
     <div class="card mt">
       <label>A short name (only you see this)</label>
-      <input type="text" value="${esc(NT.name)}" placeholder="e.g. Autumn Fair reminder" oninput="NT.name=this.value">
+      <input type="text" value="${esc(NT.name)}" placeholder="e.g. Event reminder" oninput="NT.name=this.value">
       <label>What kind of message is it?</label>
       <label class="radio-line"><input type="radio" name="cat" ${NT.cat==="UTILITY"?"checked":""} onchange="NT.cat='UTILITY';render()">
         <span><b>Plain reminder</b> — factual, about something they signed up for <span class="muted">(~1.6p per message)</span></span></label>
@@ -496,7 +384,7 @@ function newTemplate() {
         <span><b>Marketing</b> — offers, tickets, anything promotional <span class="muted">(~3.8p per message)</span></span></label>
       <label>The message</label>
       <textarea placeholder="e.g. Hi {{1}}, a reminder that [event] takes place on [date] at [venue]." oninput="NT.body=this.value; $('#tprev').textContent = this.value.replace(/{{1}}/g,'Sarah') || 'Your message appears here as recipients will see it…'">${esc(NT.body)}</textarea>
-      <p class="hint">"Reply STOP to opt out" is added automatically — it's required. The button below inserts the person's first name.</p>
+      <p class="hint">"Reply STOP to opt out" is added automatically — it's required. The button below inserts each person's first name.</p>
       <button class="btn ghost" onclick="NT.body += (NT.body && !NT.body.endsWith(' ') ? ' ' : '') + '{{1}}'; render()">Insert first name</button>
     </div>
     <div class="card"><h2>Preview</h2>
@@ -510,36 +398,111 @@ function saveTemplate() {
   S.templates.unshift(t);
   NT.name = ""; NT.body = ""; NT.cat = "UTILITY";
   go("templates");
-  toast("Sent to Meta for approval — in the demo this takes a few seconds.");
+  toast("Sent to Meta for approval — in this demo it takes a few seconds.");
   setTimeout(() => {
     t.status = "approved";
     toast(`"${t.name}" was approved — you can now send it as a campaign.`);
-    if (S.screen === "templates") render();
-  }, 7000);
+    if (["templates", "dashboard", "wizard"].includes(S.screen)) render();
+  }, 6000);
 }
 
+// ---------- campaigns ----------
+function campaignsScreen() {
+  return `
+    <div class="spread">
+      <div><h1>Campaigns</h1><p class="muted small">A campaign sends one approved message to your contacts.</p></div>
+      <button class="btn" onclick="go('wizard')">Start a campaign</button>
+    </div>
+    <div class="card mt">
+      <p class="muted" style="margin:0">Campaigns you run will appear here with their live progress and final delivery report.
+      <span class="badge b-gray">Sending is switched off in this demo</span></p>
+    </div>`;
+}
+
+function wizard() {
+  const approved = approvedTemplates();
+  if (S.contacts === 0) return `
+    <h1>Start a campaign</h1>
+    <div class="banner n-amber mt">First, <a onclick="go('contacts')">upload your contacts</a> — there's no one to send to yet.</div>`;
+  if (approved.length === 0) return `
+    <h1>Start a campaign</h1>
+    <div class="banner n-amber mt">You need an approved message first — <a onclick="go('newTemplate')">write one</a>.
+    ${S.templates.length ? "Yours is still waiting for approval; it only takes a moment in this demo." : ""}</div>`;
+
+  const w = S.wiz;
+  if (!w.tmpl || !approved.find(t => t.id === w.tmpl)) w.tmpl = approved[0].id;
+  const t = approved.find(x => x.id === w.tmpl);
+  const recipients = S.contacts - S.unsubscribed;
+  const rate = t.cat === "MARKETING" ? 3.82 : 1.59;
+  const cost = Math.round(recipients * rate);
+  const ready = w.name.trim() && w.typed.trim().toUpperCase() === "SEND";
+  return `
+    <h1>Start a campaign</h1>
+    <div class="card mt">
+      <h2>1 — Name it</h2>
+      <input type="text" placeholder="e.g. Event announcement" value="${esc(w.name)}"
+        oninput="S.wiz.name=this.value; syncWizard()">
+    </div>
+    <div class="card">
+      <h2>2 — Choose the message</h2>
+      <select onchange="S.wiz.tmpl=parseInt(this.value); render()">
+        ${approved.map(x => `<option value="${x.id}" ${x.id===w.tmpl?"selected":""}>${esc(x.name)} (${x.cat === "MARKETING" ? "marketing rate" : "reminder rate"})</option>`).join("")}
+      </select>
+      <div class="bubble mt">${esc(t.body.replace(/\{\{1\}\}/g, "Sarah"))}<div class="foot">Reply STOP to opt out</div></div>
+    </div>
+    <div class="card">
+      <h2>3 — Who receives it</h2>
+      <select><option>Everyone in your contacts</option><option>Only the upload "contacts.csv"</option></select>
+      <p class="hint">Anyone who has unsubscribed is always left out automatically.</p>
+    </div>
+    <div class="card">
+      <h2>4 — Check and send</h2>
+      <ul>
+        <li><b>${fmt(recipients)}</b> people will receive this message</li>
+        <li>Meta will bill roughly <b>${pounds(cost)}</b> to your Meta account (${rate}p per message)</li>
+        <li>Sending takes about <b>5–7 days</b> — the daily limit starts at ${fmt(S.tierLimit)} and rises automatically as you send. It runs by itself.</li>
+      </ul>
+      <label>Type <span class="mono">SEND</span> to confirm</label>
+      <input type="text" style="max-width:130px" autocomplete="off" value="${esc(w.typed)}"
+        oninput="S.wiz.typed=this.value; syncWizard()">
+      ${w.attempted ? `
+        <div class="banner n-green mt"><b>This is where the demo stops.</b> In the real app the campaign would now start
+        sending, pace itself to WhatsApp's daily limits, and email you when it finishes — with a live progress bar on the
+        dashboard the whole way through.</div>` : ""}
+      <div class="mt">
+        <button class="btn" id="wizGo" ${ready ? "" : "disabled"} onclick="attemptSend()">Send to ${fmt(recipients)} people</button>
+      </div>
+    </div>`;
+}
+function syncWizard() {
+  const ready = S.wiz.name.trim() && S.wiz.typed.trim().toUpperCase() === "SEND";
+  const b = $("#wizGo"); if (b) b.disabled = !ready;
+}
+function attemptSend() {
+  S.wiz.attempted = true;
+  render();
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+// ---------- settings & help ----------
 function settings() {
   return `
     <h1>Settings</h1>
     <div class="card mt"><h2>Notifications</h2>
       <label>Send notification emails to</label>
-      <input type="text" value="owner@example.co.uk">
+      <input type="text" value="you@example.co.uk">
       <p class="hint">You get an email when a campaign finishes, when a message is approved or rejected, and if anything ever needs you.</p>
     </div>
     <div class="card"><h2>Setup health</h2>
-      <table><tbody>
+      <div class="tw"><table><tbody>
         ${["WhatsApp connection", "Sending number", "Webhook security", "Email sending", "Database"].map(x =>
           `<tr><td>${x}</td><td><span class="badge b-green">Connected</span></td></tr>`).join("")}
-      </tbody></table>
+      </tbody></table></div>
       <p class="hint">Configured once during handover — shouldn't ever change.</p>
     </div>
     <div class="card"><h2>Unsubscribed numbers</h2>
-      <p class="muted small">People here are never messaged, ever. They replied STOP, or you added them by hand.</p>
-      <table><thead><tr><th>Number</th><th>How</th><th>When</th></tr></thead><tbody>
-        <tr><td class="mono">+44 7•••• ••304</td><td>Replied STOP</td><td>Today</td></tr>
-        <tr><td class="mono">+44 7•••• ••881</td><td>Replied STOP</td><td>Yesterday</td></tr>
-        <tr><td class="mono">+44 7•••• ••112</td><td>Added by you</td><td>12 Mar 2026</td></tr>
-      </tbody></table>
+      <p class="muted small" style="margin:0">Anyone who replies STOP appears here and is never messaged again — automatically,
+      forever. You can also add numbers by hand.</p>
     </div>`;
 }
 
@@ -553,7 +516,7 @@ function help() {
         <li><b>Contacts</b> → upload a CSV. You see exactly what it found before anything happens.</li>
         <li><b>Messages</b> → write the message. Meta approves it automatically — you get an email when it's ready.</li>
         <li><b>Campaigns</b> → pick the message, check the cost estimate, type SEND.</li>
-        <li>Done. Sending paces itself to WhatsApp's daily limits and emails you when it finishes.</li>
+        <li>Done. Sending paces itself and emails you when it finishes.</li>
       </ol>
       <h2>Why sending takes days, not minutes</h2>
       <p>WhatsApp limits how many <i>new</i> people a business can message per day, and raises the limit
@@ -569,21 +532,23 @@ function help() {
 // ---------- shell ----------
 const SCREENS = {
   dashboard: { label: "Dashboard", fn: dashboard },
-  campaigns: { label: "Campaigns", fn: campaigns },
+  campaigns: { label: "Campaigns", fn: campaignsScreen },
   contacts: { label: "Contacts", fn: contacts },
   templates: { label: "Messages", fn: templates },
   settings: { label: "Settings", fn: settings },
   help: { label: "Help", fn: help },
 };
-const HIDDEN = { detail: detail, wizard: wizard, import: importScreen, newTemplate: newTemplate };
+const HIDDEN = { wizard: wizard, import: importScreen, newTemplate: newTemplate };
 
 function render() {
-  const navActive = { detail: "campaigns", wizard: "campaigns", import: "contacts", newTemplate: "templates" }[S.screen] || S.screen;
+  const navActive = { wizard: "campaigns", import: "contacts", newTemplate: "templates" }[S.screen] || S.screen;
   $("#nav").innerHTML = `<div class="brand">Campaign Manager</div>` +
     Object.entries(SCREENS).map(([k, v]) =>
       `<button class="nav-link ${navActive === k ? "active" : ""}" onclick="go('${k}')">${v.label}</button>`).join("") +
-    `<div class="side-foot">Signed in as the owner<br>(demo)</div>`;
+    `<div class="side-foot">Signed in as the owner (demo)</div>`;
   $("#main").innerHTML = (SCREENS[S.screen]?.fn || HIDDEN[S.screen] || dashboard)();
 }
 render();
 </script>
+</body>
+</html>
